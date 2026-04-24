@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # Backend FastAPI
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: gastro_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - backend_data:/app/data
+    environment:
+      - DATABASE_URL=sqlite:///./data/app.db
+      - SECRET_KEY=your-super-secret-key-change-this-in-production
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+      - DEBUG=True
+      - BACKEND_CORS_ORIGINS=http://localhost:3000,http://localhost:5173,http://localhost:8080,http://127.0.0.1:8080,http://frontend:80,http://localhost:80
+    networks:
+      - gastro_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  # Frontend Flutter Web
+  frontend:
+    build:
+      context: ./Projeto_Gastro-main
+      dockerfile: Dockerfile
+    container_name: gastro_frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - gastro_network
+    restart: unless-stopped
+
+volumes:
+  backend_data:
+    driver: local
+
+networks:
+  gastro_network:
+    driver: bridge

@@ -1,0 +1,30 @@
+import 'package:flutter/material.dart';
+import '../../presentation/pages/home/homePage.dart';
+import '../../presentation/pages/auth/loginPage.dart';
+import '../../presentation/pages/auth/cadastroPage.dart';
+import '../../presentation/pages/inicial/inicialPage.dart';
+import '../../presentation/pages/inicial/favoritos_page.dart';
+import '../../presentation/pages/perfil/perfilPage.dart';
+import '../../presentation/pages/configuracoes/configuracoesPage.dart';
+
+class AppRoutes {
+  static const String home = '/';
+  static const String login = '/login';
+  static const String cadastro = '/cadastro';
+  static const String inicial = '/inicial';
+  static const String favoritos = '/favoritos';
+  static const String perfil = '/perfil';
+  static const String configuracoes = '/configuracoes';
+
+  static Map<String, WidgetBuilder> getRoutes() {
+    return {
+      home: (context) => const Homepage(),
+      login: (context) => const LoginPage(),
+      cadastro: (context) => const CadastroPage(),
+      inicial: (context) => const InicialPage(),
+      favoritos: (context) => const FavoritosPage(),
+      perfil: (context) => const PerfilPage(),
+      configuracoes: (context) => const ConfiguracoesPage(),
+    };
+  }
+}
