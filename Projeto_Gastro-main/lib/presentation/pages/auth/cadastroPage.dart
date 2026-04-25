@@ -80,7 +80,7 @@ class _CadastroPageState extends State<CadastroPage> {
         fit: StackFit.expand,
         children: [
           Image.asset(
-            'assets/imagens/imagem_de_fundo.png',
+            'assets/imagens/fundo_gastro2.png',
             fit: BoxFit.cover,
           ),
           SafeArea(
