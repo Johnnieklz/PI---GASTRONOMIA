@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import '../../../config/routes/app_routes.dart';
+import '../../../providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 import '../../../config/routes/app_routes.dart';
 import '../../../providers/auth_provider.dart';
@@ -49,7 +53,9 @@ class _CadastroPageState extends State<CadastroPage> {
       email: _emailController.text.trim(),
       username: _usernameController.text.trim(),
       password: _passwordController.text,
-      fullName: _nameController.text.trim().isNotEmpty ? _nameController.text.trim() : null,
+      fullName: _nameController.text.trim().isNotEmpty
+          ? _nameController.text.trim()
+          : null,
     );
 
     if (success && mounted) {
@@ -80,13 +86,14 @@ class _CadastroPageState extends State<CadastroPage> {
         fit: StackFit.expand,
         children: [
           Image.asset(
-            'assets/imagens/imagem_de_fundo.png',
+            'assets/imagens/fundo_gastro1.png',
             fit: BoxFit.cover,
           ),
           SafeArea(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 24.0, vertical: 32.0),
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -95,7 +102,8 @@ class _CadastroPageState extends State<CadastroPage> {
                       Row(
                         children: [
                           IconButton(
-                            icon: const Icon(Icons.arrow_back, color: Color(0xFF6C2998)),
+                            icon: const Icon(Icons.arrow_back,
+                                color: Color(0xFF6C2998)),
                             onPressed: () {
                               Navigator.pop(context);
                             },
@@ -104,6 +112,14 @@ class _CadastroPageState extends State<CadastroPage> {
                         ],
                       ),
                       const SizedBox(height: 16),
+                      Center(
+                        child: SvgPicture.asset(
+                          'assets/imagens/logo_senac.svg',
+                          height: 120,
+                          width: 120,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
                       const Text(
                         'Crie sua conta',
                         style: TextStyle(
@@ -137,10 +153,12 @@ class _CadastroPageState extends State<CadastroPage> {
                         controller: _nameController,
                         decoration: InputDecoration(
                           hintText: 'Digite seu nome completo',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8)),
                           filled: true,
                           fillColor: Colors.white.withOpacity(0.9),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 14),
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -171,10 +189,12 @@ class _CadastroPageState extends State<CadastroPage> {
                         },
                         decoration: InputDecoration(
                           hintText: 'seu_usuario',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8)),
                           filled: true,
                           fillColor: Colors.white.withOpacity(0.9),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 14),
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -203,10 +223,12 @@ class _CadastroPageState extends State<CadastroPage> {
                         },
                         decoration: InputDecoration(
                           hintText: 'seu@email.com',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8)),
                           filled: true,
                           fillColor: Colors.white.withOpacity(0.9),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 14),
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -235,12 +257,16 @@ class _CadastroPageState extends State<CadastroPage> {
                         },
                         decoration: InputDecoration(
                           hintText: '************',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8)),
                           filled: true,
                           fillColor: Colors.white.withOpacity(0.9),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 14),
                           suffixIcon: IconButton(
-                            icon: Icon(_obscurePassword ? Icons.visibility_off : Icons.visibility),
+                            icon: Icon(_obscurePassword
+                                ? Icons.visibility_off
+                                : Icons.visibility),
                             onPressed: () {
                               setState(() {
                                 _obscurePassword = !_obscurePassword;
@@ -275,15 +301,20 @@ class _CadastroPageState extends State<CadastroPage> {
                         },
                         decoration: InputDecoration(
                           hintText: '************',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8)),
                           filled: true,
                           fillColor: Colors.white.withOpacity(0.9),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 14),
                           suffixIcon: IconButton(
-                            icon: Icon(_obscureConfirmPassword ? Icons.visibility_off : Icons.visibility),
+                            icon: Icon(_obscureConfirmPassword
+                                ? Icons.visibility_off
+                                : Icons.visibility),
                             onPressed: () {
                               setState(() {
-                                _obscureConfirmPassword = !_obscureConfirmPassword;
+                                _obscureConfirmPassword =
+                                    !_obscureConfirmPassword;
                               });
                             },
                           ),
@@ -297,7 +328,8 @@ class _CadastroPageState extends State<CadastroPage> {
                           width: double.infinity,
                           height: 50,
                           child: ElevatedButton(
-                            onPressed: authProvider.isLoading ? null : _register,
+                            onPressed:
+                                authProvider.isLoading ? null : _register,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF6C2998),
                               shape: RoundedRectangleBorder(

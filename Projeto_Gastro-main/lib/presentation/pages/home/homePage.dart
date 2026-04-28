@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
@@ -10,13 +11,19 @@ class Homepage extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           Image.asset(
-            'assets/imagens/imagem_de_fundo.png',
+            'assets/imagens/fundo_gastro1.png',
             fit: BoxFit.cover,
           ),
           Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                SvgPicture.asset(
+                  'assets/imagens/logo_senac.svg',
+                  height: 150,
+                  width: 150,
+                ),
+                const SizedBox(height: 32),
                 Text(
                   'Bem-vindo',
                   style: TextStyle(

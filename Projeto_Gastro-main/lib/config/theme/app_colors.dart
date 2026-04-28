@@ -11,8 +11,13 @@ class AppColors {
   static const Color secondaryLight = Color(0xFFFFA733);
   static const Color secondaryDark = Color(0xFFCC7A12);
 
-  // ⚪ Fundo
+  // 🔘 Botões (do colega)
+  static const Color button = Color(0xFF004A8D);
+  static const Color buttonDark = Color(0xFF003366);
+
+  // ⚪ Fundo (padronizado)
   static const Color background = Color(0xFFF5F6FA);
+
   static const Color surface = Color(0xFFFFFFFF);
   static const Color card = Color(0xFFFFFFFF);
 

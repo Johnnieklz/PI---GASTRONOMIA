@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import '../../../config/routes/app_routes.dart';
+import '../../../providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 import '../../../config/routes/app_routes.dart';
 import '../../../providers/auth_provider.dart';
@@ -55,19 +59,27 @@ class _LoginPageState extends State<LoginPage> {
         fit: StackFit.expand,
         children: [
           Image.asset(
-            'assets/imagens/imagem_de_fundo.png',
+            'assets/imagens/fundo_gastro1.png',
             fit: BoxFit.cover,
+            opacity: const AlwaysStoppedAnimation(0.5),
           ),
           SafeArea(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 24.0, vertical: 32.0),
                 child: Form(
                   key: _formKey,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 16),
+                      SvgPicture.asset(
+                        'assets/imagens/logo_senac.svg',
+                        height: 150,
+                        width: 150,
+                      ),
+                      const SizedBox(height: 24),
                       const Text(
                         'Faça login',
                         style: TextStyle(
@@ -109,10 +121,12 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         decoration: InputDecoration(
                           hintText: 'teste@gmail.com',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8)),
                           filled: true,
                           fillColor: Colors.white.withOpacity(0.9),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 14),
                         ),
                       ),
                       const SizedBox(height: 24),
@@ -139,12 +153,16 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         decoration: InputDecoration(
                           hintText: '************',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8)),
                           filled: true,
                           fillColor: Colors.white.withOpacity(0.9),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 14),
                           suffixIcon: IconButton(
-                            icon: Icon(_obscurePassword ? Icons.visibility_off : Icons.visibility),
+                            icon: Icon(_obscurePassword
+                                ? Icons.visibility_off
+                                : Icons.visibility),
                             onPressed: () {
                               setState(() {
                                 _obscurePassword = !_obscurePassword;
@@ -163,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                                 _rememberMe = value ?? false;
                               });
                             },
-                            activeColor: const Color(0xFF6C2998),
+                            activeColor: const Color(0xFF004A8D),
                           ),
                           const Text('Lembre-me'),
                           const Spacer(),
@@ -172,14 +190,15 @@ class _LoginPageState extends State<LoginPage> {
                               // TODO: Implementar esqueci a senha
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text('Funcionalidade em desenvolvimento'),
+                                  content:
+                                      Text('Funcionalidade em desenvolvimento'),
                                 ),
                               );
                             },
                             child: const Text(
                               'Esqueceu a senha?',
                               style: TextStyle(
-                                color: Color(0xFF6C2998),
+                                color: Color.fromARGB(255, 255, 255, 255),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -194,7 +213,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: ElevatedButton(
                             onPressed: authProvider.isLoading ? null : _login,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF6C2998),
+                              backgroundColor: const Color(0xFF004A8D),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(16),
                               ),
