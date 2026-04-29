@@ -330,3 +330,4 @@ class _CadastroPageState extends State<CadastroPage> {
     );
   }
 }
+
