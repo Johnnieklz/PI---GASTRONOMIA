@@ -6,6 +6,7 @@ import '../../presentation/pages/inicial/inicialPage.dart';
 import '../../presentation/pages/inicial/favoritos_page.dart';
 import '../../presentation/pages/perfil/perfilPage.dart';
 import '../../presentation/pages/configuracoes/configuracoesPage.dart';
+import '../../presentation/pages/auth/forgotPasswordPage.dart';
 
 class AppRoutes {
   static const String home = '/';
@@ -15,7 +16,8 @@ class AppRoutes {
   static const String favoritos = '/favoritos';
   static const String perfil = '/perfil';
   static const String configuracoes = '/configuracoes';
-
+  static const String forgotPassword = '/forgot-password'; 
+  
   static Map<String, WidgetBuilder> getRoutes() {
     return {
       home: (context) => const Homepage(),
@@ -25,6 +27,7 @@ class AppRoutes {
       favoritos: (context) => const FavoritosPage(),
       perfil: (context) => const PerfilPage(),
       configuracoes: (context) => const ConfiguracoesPage(),
+      forgotPassword: (context) => const ForgotPasswordPage(),
     };
   }
 }

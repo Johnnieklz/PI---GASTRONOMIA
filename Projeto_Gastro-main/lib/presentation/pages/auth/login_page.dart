@@ -208,12 +208,12 @@ class _LoginPageState extends State<LoginPage> {
                           ],
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {Navigator.pushNamed(context, AppRoutes.forgotPassword);},
                           child: const Text(
                             "Esqueceu a senha?",
                             style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w700, fontSize: 13),
                           ),
-                        ),
+                        ),                        
                       ],
                     ),
                   ),
