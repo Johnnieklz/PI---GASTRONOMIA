@@ -23,7 +23,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     if (!_formKey.currentState!.validate()) {
       return;
     }
-    final email = _emailController.text.trim();
+    final email = _emailController.text.trim(); // email será quando o backend estiver pronto
 
     Navigator.pushReplacementNamed(context, AppRoutes.forgotPasswordSuccess);
   }

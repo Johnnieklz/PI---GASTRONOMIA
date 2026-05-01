@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_gastronomia_ficha/presentation/pages/widgets/main_navigation.dart';
 import '../../presentation/pages/home/homePage.dart';
 import '../../presentation/pages/auth/login_page.dart';
 import '../../presentation/pages/auth/cadastroPage.dart';
@@ -10,6 +11,7 @@ import '../../presentation/pages/auth/forgotPasswordPage.dart';
 import '../../presentation/pages/auth/forgotPasswordSucess.dart';
 
 class AppRoutes {
+  static const String main = '/main';
   static const String home = '/';
   static const String login = '/login';
   static const String cadastro = '/cadastro';
@@ -21,6 +23,7 @@ class AppRoutes {
   static const String forgotPasswordSuccess = '/forgot-password-success';
   static Map<String, WidgetBuilder> getRoutes() {
     return {
+      main: (context) => const MainNavigation(),
       home: (context) => const Homepage(),
       login: (context) => const LoginPage(),
       cadastro: (context) => const CadastroPage(),

@@ -27,7 +27,8 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             title: 'Projeto Gastronomia',
             theme: AppTheme.lightTheme,
-            initialRoute: authProvider.isAuthenticated ? AppRoutes.inicial : AppRoutes.login,
+            initialRoute: authProvider.isAuthenticated ? 
+            AppRoutes.main : AppRoutes.login,
             routes: AppRoutes.getRoutes(),
             debugShowCheckedModeBanner: false,
           );
