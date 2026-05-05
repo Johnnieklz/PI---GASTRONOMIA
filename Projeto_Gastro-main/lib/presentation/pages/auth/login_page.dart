@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
     if (!mounted) return;
 
     if (success) {
-      Navigator.pushReplacementNamed(context, AppRoutes.inicial);
+      Navigator.pushReplacementNamed(context, AppRoutes.main);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -78,7 +78,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             
-
             //  🔵 Ondas do rodapé \\ Imagem alinhada na base com largura total 
             Opacity(
               opacity: 0.7,

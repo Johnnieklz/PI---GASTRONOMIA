@@ -6,7 +6,7 @@ class CustomBottomNavBar extends StatelessWidget {
   final ValueChanged<int> onTap;
 
   /// Altura total da navbar — usada pelas páginas no padding inferior das listas.
-  static const double navBarHeight = 75.0;
+  static const double navBarHeight = 75.0; // PASSIVEL DE MUDANÇA!!
 
   const CustomBottomNavBar({
     super.key,
@@ -61,15 +61,32 @@ class CustomBottomNavBar extends StatelessWidget {
             ],
           ),
           child: SafeArea(
-            top: false, // já está no bottom — SafeArea protege apenas home indicator
+            top:
+                false, // já está no bottom — SafeArea protege apenas home indicator
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _NavItem(icon: Icons.home_rounded,     index: 0, currentIndex: currentIndex, onTap: onTap),
-                _NavItem(icon: Icons.favorite_rounded,  index: 1, currentIndex: currentIndex, onTap: onTap),
+                _NavItem(
+                    icon: Icons.home_rounded,
+                    index: 0,
+                    currentIndex: currentIndex,
+                    onTap: onTap),
+                _NavItem(
+                    icon: Icons.favorite_rounded,
+                    index: 1,
+                    currentIndex: currentIndex,
+                    onTap: onTap),
                 const SizedBox(width: 64), // espaço para o FAB central
-                _NavItem(icon: Icons.person_rounded,    index: 3, currentIndex: currentIndex, onTap: onTap),
-                _NavItem(icon: Icons.settings_rounded,  index: 4, currentIndex: currentIndex, onTap: onTap),
+                _NavItem(
+                    icon: Icons.person_rounded,
+                    index: 3,
+                    currentIndex: currentIndex,
+                    onTap: onTap),
+                _NavItem(
+                    icon: Icons.settings_rounded,
+                    index: 4,
+                    currentIndex: currentIndex,
+                    onTap: onTap),
               ],
             ),
           ),
