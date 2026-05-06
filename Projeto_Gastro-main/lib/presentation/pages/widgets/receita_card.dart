@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../../services/favoritos_service.dart';
+
+String extrairCategoria(String subtitulo) {
+  return subtitulo.split('•').first.trim();
+}
+
+String extrairTempo(String subtitulo) {
+  final partes = subtitulo.split('•');
+  return partes.length > 1 ? partes.last.trim() : '';
+}
 
 class ReceitaCard extends StatelessWidget {
   final String titulo;
@@ -29,92 +37,204 @@ class ReceitaCard extends StatelessWidget {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Layout vertical — GridView
-// ---------------------------------------------------------------------------
+//
+// 🔥 BADGE COM FUNDO BRANCO + COR
+//
+class _CategoryBadge extends StatelessWidget {
+  final String categoria;
+
+  const _CategoryBadge({required this.categoria});
+
+  (Color, IconData) _getStyle() {
+    switch (categoria.toLowerCase()) {
+      case 'fitness':
+        return (Colors.green, Icons.fitness_center);
+      case 'jantar':
+        return (Colors.purple, Icons.restaurant);
+      case 'almoço':
+        return (Colors.blue, Icons.lunch_dining);
+      case 'forno':
+        return (Colors.orange, Icons.local_fire_department);
+      case 'cozinha':
+        return (Colors.deepPurple, Icons.kitchen);
+      default:
+        return (Colors.grey, Icons.restaurant_menu);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final (color, icon) = _getStyle();
+
+    return Container(
+      padding: const EdgeInsets.all(3), // 🔥 FUNDO BRANCO EXTERNO
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 6,
+          ),
+        ],
+      ),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.12),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 14, color: color),
+            const SizedBox(width: 4),
+            Text(
+              categoria,
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+                color: color,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+//
+// 🔥 GRID CARD (FINAL PERFEITO)
+//
 class _GridCard extends StatelessWidget {
   final ReceitaCard card;
   const _GridCard({required this.card});
 
   @override
   Widget build(BuildContext context) {
-    // ✅ FIX OVERFLOW (99291px):
-    // SizedBox.expand força o Card a preencher a célula do GridView,
-    // entregando constraints "tight" (limitadas) para toda a subárvore.
-    // Sem isso: InkWell não restringe filho → Column com Expanded recebe
-    // altura infinita → RenderFlex overflowed.
-    return SizedBox.expand(
-      child: Padding(
-        padding: const EdgeInsets.all(6),
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          clipBehavior: Clip.antiAlias,
-          elevation: 3,
-          child: InkWell(
-            onTap: card.onTap,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  flex: 6,
-                  child: _ReceitaImage(imagem: card.imagem),
-                ),
-                Expanded(
-                  flex: 4,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 8, 4, 6),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      // ✅ FIX: mainAxisAlignment.spaceBetween distribui o espaço
-                      // restante sem precisar de Spacer(), que pode quebrar quando
-                      // a altura do pai não é definitivamente limitada.
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Textos agrupados no topo
-                        Column(
+    final categoria = extrairCategoria(card.subtitulo);
+    final tempo = extrairTempo(card.subtitulo);
+
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Material(
+        borderRadius: BorderRadius.circular(20),
+        elevation: 6,
+        shadowColor: Colors.black.withOpacity(0.08),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(20),
+          onTap: card.onTap,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // 🔥 IMAGEM MAIOR
+                      ClipRRect(
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(20),
+                        ),
+                        child: Image.asset(
+                          card.imagem,
+                          height: 200, // 👈 AUMENTADO
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+
+                      // 🔥 CONTEÚDO
+                      Padding(
+                        padding:
+                            const EdgeInsets.fromLTRB(12, 26, 12, 12),
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
                               card.titulo,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
+                                fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 13,
                               ),
                             ),
-                            const SizedBox(height: 2),
-                            Text(
-                              card.subtitulo,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 11,
-                                color: Colors.grey[600],
-                              ),
+
+                            const SizedBox(height: 6),
+
+                            Row(
+                              children: [
+                                Icon(Icons.access_time,
+                                    size: 14, color: Colors.grey[600]),
+                                const SizedBox(width: 4),
+                                Text(
+                                  tempo,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            const SizedBox(height: 8),
+
+                            Row(
+                              children: [
+                                _RatingStars(rating: card.rating),
+                                const SizedBox(width: 6),
+                                Text(
+                                  "${card.rating.toDouble()}",
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.grey[700],
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                        // Rating + favorito na base
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _RatingStars(rating: card.rating),
-                            _FavoriteButton(
-                              titulo: card.titulo,
-                              onFavorite: card.onFavorite,
-                            ),
-                          ],
-                        ),
-                      ],
+                      ),
+                    ],
+                  ),
+
+                  // ❤️ FAVORITO
+                  Positioned(
+                    top: 12,
+                    right: 12,
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      child: _FavoriteButton(
+                        titulo: card.titulo,
+                        onFavorite: card.onFavorite,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
+
+                  // 🔥 BADGE AJUSTADA
+                  Positioned(
+                    left: 15,
+                    top: 167, // 👈 AJUSTADO PRA NOVA ALTURA
+                    child: Transform.translate(
+                      offset: const Offset(0, 12),
+                      child: Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: _CategoryBadge(categoria: categoria),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
@@ -122,72 +242,69 @@ class _GridCard extends StatelessWidget {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Layout horizontal — ListView
-// ---------------------------------------------------------------------------
+//
+// 🔥 LIST CARD
+//
 class _ListCard extends StatelessWidget {
   final ReceitaCard card;
   const _ListCard({required this.card});
 
   @override
   Widget build(BuildContext context) {
+    final categoria = extrairCategoria(card.subtitulo);
+    final tempo = extrairTempo(card.subtitulo);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        clipBehavior: Clip.antiAlias,
-        elevation: 3,
+      child: Material(
+        borderRadius: BorderRadius.circular(20),
+        elevation: 4,
         child: InkWell(
+          borderRadius: BorderRadius.circular(20),
           onTap: card.onTap,
           child: SizedBox(
-            height: 100,
+            height: 120,
             child: Row(
               children: [
-                SizedBox(
-                  width: 100,
-                  child: _ReceitaImage(imagem: card.imagem),
+                ClipRRect(
+                  borderRadius: const BorderRadius.horizontal(
+                    left: Radius.circular(20),
+                  ),
+                  child: Image.asset(
+                    card.imagem,
+                    width: 120,
+                    height: 120,
+                    fit: BoxFit.cover,
+                  ),
                 ),
+
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 10,
-                    ),
-                    // ✅ mainAxisAlignment.spaceBetween sem Spacer
+                    padding: const EdgeInsets.all(12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        _CategoryBadge(categoria: categoria),
+                        const SizedBox(height: 6),
                         Text(
                           card.titulo,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 14,
                           ),
                         ),
-                        Text(
-                          card.subtitulo,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey[600],
-                          ),
-                        ),
+                        const SizedBox(height: 6),
+                        Text(tempo),
+                        const Spacer(),
                         _RatingStars(rating: card.rating),
                       ],
                     ),
                   ),
                 ),
+
                 _FavoriteButton(
                   titulo: card.titulo,
                   onFavorite: card.onFavorite,
                 ),
-                const SizedBox(width: 4),
               ],
             ),
           ),
@@ -197,31 +314,9 @@ class _ListCard extends StatelessWidget {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Sub-widgets compartilhados
-// ---------------------------------------------------------------------------
-
-class _ReceitaImage extends StatelessWidget {
-  final String imagem;
-  const _ReceitaImage({required this.imagem});
-
-  @override
-  Widget build(BuildContext context) {
-    return Image.asset(
-      imagem,
-      fit: BoxFit.cover,
-      width: double.infinity,
-      height: double.infinity,
-      errorBuilder: (_, __, ___) => ColoredBox(
-        color: Colors.grey.shade200,
-        child: const Center(
-          child: Icon(Icons.restaurant_menu, size: 36, color: Colors.grey),
-        ),
-      ),
-    );
-  }
-}
-
+//
+// ⭐ RATING
+//
 class _RatingStars extends StatelessWidget {
   final int rating;
   const _RatingStars({required this.rating});
@@ -229,25 +324,28 @@ class _RatingStars extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisSize: MainAxisSize.min,
       children: List.generate(5, (i) {
         return Icon(
-          i < rating ? Icons.star_rounded : Icons.star_outline_rounded,
-          size: 14,
-          color: i < rating ? const Color(0xFFFFC107) : Colors.grey[400],
+          i < rating ? Icons.star : Icons.star_border,
+          size: 16,
+          color: Colors.orange,
         );
       }),
     );
   }
 }
 
-/// Lê estado do Provider diretamente — não depende do pai para saber se
-/// está favoritado. context.select reconstrói apenas este widget.
+//
+// ❤️ FAVORITO
+//
 class _FavoriteButton extends StatelessWidget {
   final String titulo;
   final VoidCallback onFavorite;
 
-  const _FavoriteButton({required this.titulo, required this.onFavorite});
+  const _FavoriteButton({
+    required this.titulo,
+    required this.onFavorite,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -256,16 +354,9 @@ class _FavoriteButton extends StatelessWidget {
     );
 
     return IconButton(
-      tooltip: isFav ? 'Remover dos favoritos' : 'Adicionar aos favoritos',
-      iconSize: 22,
-      splashRadius: 20,
-      icon: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 200),
-        child: Icon(
-          isFav ? Icons.favorite_rounded : Icons.favorite_border_rounded,
-          key: ValueKey(isFav),
-          color: isFav ? Colors.red : Colors.grey,
-        ),
+      icon: Icon(
+        isFav ? Icons.favorite : Icons.favorite_border,
+        color: isFav ? Colors.red : Colors.grey,
       ),
       onPressed: onFavorite,
     );
