@@ -38,77 +38,100 @@ class _GridCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ✅ FIX OVERFLOW (99291px):
-    // SizedBox.expand força o Card a preencher a célula do GridView,
-    // entregando constraints "tight" (limitadas) para toda a subárvore.
-    // Sem isso: InkWell não restringe filho → Column com Expanded recebe
-    // altura infinita → RenderFlex overflowed.
     return SizedBox.expand(
       child: Padding(
         padding: const EdgeInsets.all(6),
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          clipBehavior: Clip.antiAlias,
-          elevation: 3,
+        child: Material(
+          borderRadius: BorderRadius.circular(18),
+          elevation: 4,
+          shadowColor: Colors.black.withOpacity(0.08),
           child: InkWell(
+            borderRadius: BorderRadius.circular(18),
             onTap: card.onTap,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                // 🔥 IMAGEM COM OVERLAY
                 Expanded(
                   flex: 6,
-                  child: _ReceitaImage(imagem: card.imagem),
+                  child: Stack(
+                    children: [
+                      _ReceitaImage(imagem: card.imagem),
+
+                      // Gradiente (melhora leitura)
+                      Positioned.fill(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(18),
+                            ),
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.transparent,
+                                Colors.black.withOpacity(0.15),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      // ❤️ botão favorito flutuante
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.9),
+                            shape: BoxShape.circle,
+                          ),
+                          child: _FavoriteButton(
+                            titulo: card.titulo,
+                            onFavorite: card.onFavorite,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
+
+                // 🔥 CONTEÚDO
                 Expanded(
                   flex: 4,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 8, 4, 6),
+                    padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      // ✅ FIX: mainAxisAlignment.spaceBetween distribui o espaço
-                      // restante sem precisar de Spacer(), que pode quebrar quando
-                      // a altura do pai não é definitivamente limitada.
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // Textos agrupados no topo
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
                               card.titulo,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
                               ),
                             ),
-                            const SizedBox(height: 2),
+                            const SizedBox(height: 4),
                             Text(
                               card.subtitulo,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                fontSize: 11,
+                                fontSize: 12,
                                 color: Colors.grey[600],
                               ),
                             ),
                           ],
                         ),
-                        // Rating + favorito na base
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _RatingStars(rating: card.rating),
-                            _FavoriteButton(
-                              titulo: card.titulo,
-                              onFavorite: card.onFavorite,
-                            ),
-                          ],
-                        ),
+
+                        // ⭐ rating
+                        _RatingStars(rating: card.rating),
                       ],
                     ),
                   ),
