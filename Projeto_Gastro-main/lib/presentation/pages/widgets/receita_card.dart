@@ -37,9 +37,8 @@ class ReceitaCard extends StatelessWidget {
   }
 }
 
-//
-// 🔥 BADGE COM FUNDO BRANCO + COR
-//
+// BADGE COM FUNDO BRANCO + COR
+
 class _CategoryBadge extends StatelessWidget {
   final String categoria;
 
@@ -105,7 +104,7 @@ class _CategoryBadge extends StatelessWidget {
 }
 
 //
-// 🔥 GRID CARD (FINAL PERFEITO)
+// GRID CARD (FINAL PERFEITO)
 //
 class _GridCard extends StatelessWidget {
   final ReceitaCard card;
@@ -134,14 +133,14 @@ class _GridCard extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // 🔥 IMAGEM MAIOR
+                      // IMAGEM MAIOR
                       ClipRRect(
                         borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(20),
                         ),
                         child: Image.asset(
                           card.imagem,
-                          height: 200, // 👈 AUMENTADO
+                          height: 200,
                           width: double.infinity,
                           fit: BoxFit.cover,
                         ),
@@ -164,36 +163,29 @@ class _GridCard extends StatelessWidget {
 
                             const SizedBox(height: 6),
 
-                            Row(
-                              children: [
-                                Icon(Icons.access_time,
-                                    size: 14, color: Colors.grey[600]),
-                                const SizedBox(width: 4),
-                                Text(
-                                  tempo,
-                                  style: TextStyle(
-                                    fontSize: 13,
+                           Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.access_time_rounded,
+                                    size: 15,
                                     color: Colors.grey[600],
                                   ),
-                                ),
-                              ],
-                            ),
 
-                            const SizedBox(height: 8),
+                                  const SizedBox(width: 5),
 
-                            Row(
-                              children: [
-                                _RatingStars(rating: card.rating),
-                                const SizedBox(width: 6),
-                                Text(
-                                  "${card.rating.toDouble()}",
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: Colors.grey[700],
+                                  Text(
+                                    tempo,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.grey[700],
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
+                                ],
+                              ),
+
+                            _RatingStars(rating:  card.rating.toDouble())
                           ],
                         ),
                       ),
@@ -219,7 +211,7 @@ class _GridCard extends StatelessWidget {
                   // 🔥 BADGE AJUSTADA
                   Positioned(
                     left: 15,
-                    top: 167, // 👈 AJUSTADO PRA NOVA ALTURA
+                    top: 167, // AJUSTADO PRA NOVA ALTURA
                     child: Transform.translate(
                       offset: const Offset(0, 12),
                       child: Container(
@@ -243,7 +235,7 @@ class _GridCard extends StatelessWidget {
 }
 
 //
-// 🔥 LIST CARD
+// LIST CARD
 //
 class _ListCard extends StatelessWidget {
   final ReceitaCard card;
@@ -295,7 +287,7 @@ class _ListCard extends StatelessWidget {
                         const SizedBox(height: 6),
                         Text(tempo),
                         const Spacer(),
-                        _RatingStars(rating: card.rating),
+                        _RatingStars(rating: card.rating.toDouble()),
                       ],
                     ),
                   ),
@@ -314,23 +306,58 @@ class _ListCard extends StatelessWidget {
   }
 }
 
-//
 // ⭐ RATING
-//
 class _RatingStars extends StatelessWidget {
-  final int rating;
-  const _RatingStars({required this.rating});
+  final double rating;
+
+  const _RatingStars({
+    required this.rating,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: List.generate(5, (i) {
-        return Icon(
-          i < rating ? Icons.star : Icons.star_border,
-          size: 16,
-          color: Colors.orange,
-        );
-      }),
+      children: [
+        // ⭐ ESTRELAS
+        Row(
+          children: List.generate(5, (i) {
+            if (i < rating.floor()) {
+              // ⭐ estrela cheia
+              return const Icon(
+                Icons.star_rounded,
+                size: 18,
+                color: Color(0xFFFFBE13),
+              );
+            } else if (i < rating && rating % 1 != 0) {
+              // ⭐ meia estrela
+              return const Icon(
+                Icons.star_half_rounded,
+                size: 18,
+                color: Color(0xFFFFBE13),
+              );
+            } else {
+              // ⭐ vazia
+              return const Icon(
+                Icons.star_outline_rounded,
+                size: 18,
+                color: Color.fromARGB(255, 148, 148, 147),
+              );
+            }
+          }),
+        ),
+
+        const SizedBox(width: 6),
+
+        // 🔥 NOTA
+        Text(
+          rating.toStringAsFixed(1),
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: Color.fromARGB(255, 49, 49, 49),
+          ),
+        ),
+      ],
     );
   }
 }
