@@ -8,7 +8,14 @@ String extrairCategoria(String subtitulo) {
 
 String extrairTempo(String subtitulo) {
   final partes = subtitulo.split('•');
-  return partes.length > 1 ? partes.last.trim() : '';
+
+  if (partes.length > 1) {
+    return partes.last
+        .replaceAll('Tempo', '')
+        .trim();
+  }
+
+  return '';
 }
 
 class ReceitaCard extends StatelessWidget {
@@ -103,9 +110,7 @@ class _CategoryBadge extends StatelessWidget {
   }
 }
 
-//
 // GRID CARD (FINAL PERFEITO)
-//
 class _GridCard extends StatelessWidget {
   final ReceitaCard card;
   const _GridCard({required this.card});
