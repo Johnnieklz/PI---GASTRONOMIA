@@ -4,9 +4,13 @@ import 'package:provider/provider.dart';
 import '../../../services/favoritos_service.dart';
 import '../../../data/receitas_data.dart';
 import '../widgets/receita_card.dart';
-import 'detalheFicha.dart';
 import '../widgets/custom_nav_bar.dart';
 import '../widgets/receita_filtro_modal.dart';
+import '../widgets/saudacao_header.dart';
+import '../widgets/hero_carrossel.dart';
+import '../widgets/categoria_chips.dart';
+import '../widgets/em_alta_row.dart';
+import 'detalheFicha.dart';
 
 class InicialPage extends StatefulWidget {
   const InicialPage({super.key});
@@ -32,28 +36,61 @@ class _InicialPageState extends State<InicialPage> {
     'Bebida',
   ];
 
+  final List<String> _emAlta = [
+    'Arroz Integral',
+    'Strogonoff',
+    'Pão Caseiro',
+    'Bowl Fitness',
+    'Risoto',
+  ];
+
   @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
   }
 
+  bool get _isFiltrando =>
+      _searchQuery.isNotEmpty || _categoriaSelecionada != 'Todos';
+
   List<Map<String, dynamic>> get _receitasFiltradas {
     return ReceitasData.receitas.where((r) {
       final titulo = (r['titulo'] as String).toLowerCase();
       final subtitulo = (r['subtitulo'] as String).toLowerCase();
 
-      final combinaBusca =
-          titulo.contains(_searchQuery.toLowerCase());
+      final combinaBusca = titulo.contains(_searchQuery.toLowerCase());
 
       final combinaCategoria =
           _categoriaSelecionada == 'Todos' ||
-              subtitulo.contains(
-                _categoriaSelecionada.toLowerCase(),
-              );
+              subtitulo.contains(_categoriaSelecionada.toLowerCase());
 
       return combinaBusca && combinaCategoria;
     }).toList();
+  }
+
+  void _navegarParaReceita(Map<String, dynamic> receita) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => VisualizarFichaTecnica(receita: receita),
+      ),
+    );
+  }
+
+  void _abrirFiltros() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (modalContext) {
+        return ReceitaFiltroModal(
+          categorias: categorias,
+          categoriaSelecionada: _categoriaSelecionada,
+          onCategoriaSelecionada: (categoria) {
+            setState(() => _categoriaSelecionada = categoria);
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -63,105 +100,125 @@ class _InicialPageState extends State<InicialPage> {
       child: SafeArea(
         bottom: false,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 16),
-
-            _SearchBar(
+            // ── Saudação + Busca ──────────────────────────────
+            SaudacaoHeader(
               controller: _searchController,
-
-              onChanged: (v) {
-                setState(() {
-                  _searchQuery = v;
-                });
-              },
-
-              onFilterTap: () {
-                showModalBottomSheet(
-                  context: context,
-                  backgroundColor: Colors.transparent,
-                  isScrollControlled: true,
-                  builder: (modalContext) {
-                    return ReceitaFiltroModal(
-                      categorias: categorias,
-                      categoriaSelecionada:
-                          _categoriaSelecionada,
-
-                      onCategoriaSelecionada: (categoria) {
-                        setState(() {
-                          _categoriaSelecionada = categoria;
-                        });
-
-                      },
-                    );
-                  },
-                );
-              },
+              onChanged: (v) => setState(() => _searchQuery = v),
+              onFilterTap: _abrirFiltros,
             ),
 
-            const SizedBox(height: 12),
+            const SizedBox(height: 4),
 
+            // ── Conteúdo scrollável ───────────────────────────
             Expanded(
               child: Consumer<FavoritosService>(
                 builder: (context, favoritos, _) {
                   final receitas = _receitasFiltradas;
 
-                  if (receitas.isEmpty) {
-                    return const _EmptyState(
-                      mensagem:
-                          'Nenhuma receita encontrada',
-                    );
-                  }
+                  return CustomScrollView(
+                    slivers: [
 
-                  return GridView.builder(
-                    padding: const EdgeInsets.only(
-                      bottom:
-                          CustomBottomNavBar.navBarHeight +
-                              16,
-                    ),
+                      // ── Seções visíveis só na tela inicial ──
+                      if (!_isFiltrando) ...[
+                        SliverToBoxAdapter(
+                          child: HeroCarousel(
+                            receitas: ReceitasData.receitas,
+                            onTap: _navegarParaReceita,
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 14),
+                            child: CategoriaChips(
+                              categorias: categorias,
+                              categoriaSelecionada: _categoriaSelecionada,
+                              onSelecionada: (cat) =>
+                                  setState(() => _categoriaSelecionada = cat),
+                            ),
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: EmAltaRow(itens: _emAlta),
+                          ),
+                        ),
+                        const SliverToBoxAdapter(
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(16, 14, 16, 4),
+                            child: Text(
+                              'Populares hoje',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w800,
+                                color: Color(0xFF1A1A1A),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
 
-                    itemCount: receitas.length,
-
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.72,
-                    ),
-
-                    itemBuilder: (context, index) {
-                      final receita = receitas[index];
-
-                      return ReceitaCard(
-                        titulo:
-                            receita['titulo'] as String,
-
-                        subtitulo:
-                            receita['subtitulo'] as String,
-
-                        imagem:
-                            receita['imagem'] as String,
-
-                        rating:
-                            (receita['rating'] as int?) ??
-                                4,
-
-                        isGridMode: true,
-
-                        onTap: () =>
-                            Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) =>
-                                VisualizarFichaTecnica(
-                              receita: receita,
+                      // ── Chips visíveis durante busca/filtro ──
+                      if (_isFiltrando)
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 12),
+                            child: CategoriaChips(
+                              categorias: categorias,
+                              categoriaSelecionada: _categoriaSelecionada,
+                              onSelecionada: (cat) =>
+                                  setState(() => _categoriaSelecionada = cat),
                             ),
                           ),
                         ),
 
-                        onFavorite: () =>
-                            favoritos.toggleFavorito(
-                          receita['titulo'] as String,
-                        ),
-                      );
-                    },
+                      // ── Grid de receitas ou estado vazio ─────
+                      receitas.isEmpty
+                          ? const SliverFillRemaining(
+                              hasScrollBody: false,
+                              child: _EmptyState(
+                                mensagem: 'Nenhuma receita encontrada',
+                              ),
+                            )
+                          : SliverPadding(
+                              padding: EdgeInsets.only(
+                                top: 8,
+                                bottom:
+                                    CustomBottomNavBar.navBarHeight + 16,
+                              ),
+                              sliver: SliverGrid(
+                                delegate: SliverChildBuilderDelegate(
+                                  (context, index) {
+                                    final receita = receitas[index];
+                                    return ReceitaCard(
+                                      titulo:
+                                          receita['titulo'] as String,
+                                      subtitulo:
+                                          receita['subtitulo'] as String,
+                                      imagem: receita['imagem'] as String,
+                                      rating:
+                                          (receita['rating'] as int?) ?? 4,
+                                      isGridMode: true,
+                                      onTap: () =>
+                                          _navegarParaReceita(receita),
+                                      onFavorite: () =>
+                                          favoritos.toggleFavorito(
+                                        receita['titulo'] as String,
+                                      ),
+                                    );
+                                  },
+                                  childCount: receitas.length,
+                                ),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 0.72,
+                                ),
+                              ),
+                            ),
+                    ],
                   );
                 },
               ),
@@ -173,165 +230,24 @@ class _InicialPageState extends State<InicialPage> {
   }
 }
 
-class _SearchBar extends StatelessWidget {
-  final TextEditingController controller;
-  final ValueChanged<String> onChanged;
-  final VoidCallback onFilterTap;
-
-  const _SearchBar({
-    required this.controller,
-    required this.onChanged,
-    required this.onFilterTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding:
-          const EdgeInsets.symmetric(horizontal: 16),
-
-      child: Row(
-        children: [
-          // 🔍 CAMPO DE BUSCA
-          Expanded(
-            child: Container(
-              height: 62,
-
-              decoration: BoxDecoration(
-                color: Colors.white,
-
-                borderRadius:
-                    BorderRadius.circular(22),
-
-                boxShadow: [
-                  BoxShadow(
-                    color:
-                        Colors.black.withOpacity(0.06),
-
-                    blurRadius: 14,
-
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-
-              child: TextField(
-                controller: controller,
-                onChanged: onChanged,
-
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-
-                decoration: InputDecoration(
-                  hintText: 'Buscar receita...',
-
-                  hintStyle: TextStyle(
-                    color: Colors.grey[500],
-                    fontSize: 16,
-                  ),
-
-                  prefixIcon: Padding(
-                    padding:
-                        const EdgeInsets.only(
-                      left: 14,
-                      right: 8,
-                    ),
-
-                    child: Icon(
-                      Icons.search_rounded,
-                      size: 32,
-                      color: Colors.grey[700],
-                    ),
-                  ),
-
-                  prefixIconConstraints:
-                      const BoxConstraints(
-                    minWidth: 60,
-                  ),
-
-                  border: InputBorder.none,
-
-                  contentPadding:
-                      const EdgeInsets.symmetric(
-                    vertical: 18,
-                  ),
-                ),
-              ),
-            ),
-          ),
-
-          const SizedBox(width: 14),
-
-          // ⚙️ BOTÃO FILTRO
-          Container(
-            height: 62,
-            width: 62,
-
-            decoration: BoxDecoration(
-              color: Colors.white,
-
-              borderRadius:
-                  BorderRadius.circular(22),
-
-              boxShadow: [
-                BoxShadow(
-                  color:
-                      Colors.black.withOpacity(0.06),
-
-                  blurRadius: 14,
-
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-
-            child: IconButton(
-              onPressed: onFilterTap,
-
-              icon: const Icon(
-                Icons.tune_rounded,
-                color: Color(0xFF8B5CF6),
-                size: 28,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+// ── Estado vazio ─────────────────────────────────────────────────────────────
 
 class _EmptyState extends StatelessWidget {
   final String mensagem;
 
-  const _EmptyState({
-    required this.mensagem,
-  });
+  const _EmptyState({required this.mensagem});
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
-
         children: [
-          Icon(
-            Icons.search_off_rounded,
-            size: 64,
-            color: Colors.grey[300],
-          ),
-
+          Icon(Icons.search_off_rounded, size: 64, color: Colors.grey[300]),
           const SizedBox(height: 12),
-
           Text(
             mensagem,
-
-            style: TextStyle(
-              color: Colors.grey[500],
-              fontSize: 15,
-            ),
+            style: TextStyle(color: Colors.grey[500], fontSize: 15),
           ),
         ],
       ),

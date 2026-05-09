@@ -70,7 +70,7 @@ class _ReceitaFiltroModalState
                   OutlinedButton(
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(
-                        color: Color(0xFF8B5CF6),
+                        color: Color(0xFF004C94),
                       ),
 
                       shape: RoundedRectangleBorder(
@@ -101,7 +101,7 @@ class _ReceitaFiltroModalState
                     child: const Text(
                       'Limpar',
                       style: TextStyle(
-                        color: Color(0xFF8B5CF6),
+                        color: Color(0xFF004C94),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -113,7 +113,7 @@ class _ReceitaFiltroModalState
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor:
-                          const Color(0xFF2F3142),
+                          const Color(0xFF004C94),
 
                       shape: RoundedRectangleBorder(
                         borderRadius:
@@ -195,7 +195,7 @@ class _ReceitaFiltroModalState
                   decoration: BoxDecoration(
                     color: isSelected
                         ? const Color(
-                            0xFF8B5CF6)
+                            0xFF004C94)
                         : Colors.white,
 
                     borderRadius:
