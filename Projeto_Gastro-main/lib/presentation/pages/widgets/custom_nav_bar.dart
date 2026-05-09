@@ -16,20 +16,12 @@ class CustomBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ✅ SizedBox declara a altura real ao Scaffold — ele reserva exatamente
-    // esse espaço no bottomNavigationBar e avisa o MediaQuery.padding.bottom
-    // das páginas filhas. Sem isso o Scaffold não sabe quanto espaço reservar
-    // e a navbar pode sobrepor ou sumir.
     return SizedBox(
       height: navBarHeight,
       child: Stack(
-        // ✅ clipBehavior: Clip.none permite o FAB "flutuar" acima da barra
-        // sem ser cortado pelo SizedBox.
         clipBehavior: Clip.none,
         children: [
-          // Barra principal glass ocupa os 75px
           _buildBar(context),
-          // FAB centralizado, posicionado 20px acima do topo da barra
           _buildCenterButton(),
         ],
       ),
@@ -61,32 +53,39 @@ class CustomBottomNavBar extends StatelessWidget {
             ],
           ),
           child: SafeArea(
-            top:
-                false, // já está no bottom — SafeArea protege apenas home indicator
+            top: false,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _NavItem(
-                    icon: Icons.home_rounded,
-                    index: 0,
-                    currentIndex: currentIndex,
-                    onTap: onTap),
+                  icon: Icons.home_rounded,
+                  label: 'Início',
+                  index: 0,
+                  currentIndex: currentIndex,
+                  onTap: onTap,
+                ),
                 _NavItem(
-                    icon: Icons.favorite_rounded,
-                    index: 1,
-                    currentIndex: currentIndex,
-                    onTap: onTap),
+                  icon: Icons.favorite_rounded,
+                  label: 'Favoritos',
+                  index: 1,
+                  currentIndex: currentIndex,
+                  onTap: onTap,
+                ),
                 const SizedBox(width: 64), // espaço para o FAB central
                 _NavItem(
-                    icon: Icons.person_rounded,
-                    index: 3,
-                    currentIndex: currentIndex,
-                    onTap: onTap),
+                  icon: Icons.person_rounded,
+                  label: 'Perfil',
+                  index: 3,
+                  currentIndex: currentIndex,
+                  onTap: onTap,
+                ),
                 _NavItem(
-                    icon: Icons.settings_rounded,
-                    index: 4,
-                    currentIndex: currentIndex,
-                    onTap: onTap),
+                  icon: Icons.settings_rounded,
+                  label: 'Config.',
+                  index: 4,
+                  currentIndex: currentIndex,
+                  onTap: onTap,
+                ),
               ],
             ),
           ),
@@ -96,9 +95,6 @@ class CustomBottomNavBar extends StatelessWidget {
   }
 
   Widget _buildCenterButton() {
-    // ✅ left: 0 + right: 0 + top: -20 = centralizado horizontalmente e
-    // 20px acima do topo da barra. Sem left/right, o Positioned poderia
-    // não centralizar corretamente dependendo da alignment do Stack.
     return Positioned(
       top: -20,
       left: 0,
@@ -119,12 +115,14 @@ class CustomBottomNavBar extends StatelessWidget {
 
 class _NavItem extends StatelessWidget {
   final IconData icon;
+  final String label;
   final int index;
   final int currentIndex;
   final ValueChanged<int> onTap;
 
   const _NavItem({
     required this.icon,
+    required this.label,
     required this.index,
     required this.currentIndex,
     required this.onTap,
@@ -135,12 +133,11 @@ class _NavItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      // HitTestBehavior.opaque evita miss-taps em áreas transparentes do widget
       behavior: HitTestBehavior.opaque,
       onTap: () => onTap(index),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 250),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
           color: _isSelected
               ? const Color(0xFF004C94).withOpacity(0.10)
@@ -155,11 +152,23 @@ class _NavItem extends StatelessWidget {
               duration: const Duration(milliseconds: 200),
               child: Icon(
                 icon,
-                size: 26,
+                size: 24,
                 color: _isSelected ? const Color(0xFF004C94) : Colors.grey,
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 2),
+            AnimatedDefaultTextStyle(
+              duration: const Duration(milliseconds: 200),
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight:
+                    _isSelected ? FontWeight.w700 : FontWeight.w500,
+                color:
+                    _isSelected ? const Color(0xFF004C94) : Colors.grey,
+              ),
+              child: Text(label),
+            ),
+            const SizedBox(height: 2),
             AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               height: 3,
