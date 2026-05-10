@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import '../../../services/favoritos_service.dart';
 import '../../../data/receitas_data.dart';
 import 'detalheFicha.dart';
-import 'criar_ficha_tecnica.dart';
+import 'criar_ficha_tecnica_page.dart';
 import 'favoritos_page.dart';
 
 class InicialPage extends StatefulWidget {
