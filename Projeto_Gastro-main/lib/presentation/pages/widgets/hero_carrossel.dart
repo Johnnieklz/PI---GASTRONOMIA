@@ -217,14 +217,14 @@ class _HeroCard extends StatelessWidget {
                         const SizedBox(width: 10),
                         const Icon(
                           Icons.access_time_rounded,
-                          color: Colors.white70,
+                          color: Colors.white,
                           size: 13,
                         ),
                         const SizedBox(width: 3),
                         Text(
                           receita['tempo'] as String? ?? '30 min',
                           style: const TextStyle(
-                            color: Colors.white70,
+                            color: Colors.white,
                             fontSize: 12,
                           ),
                         ),

@@ -62,7 +62,7 @@ class CategoriaChips extends StatelessWidget {
                 border: Border.all(
                   color: isSelected
                       ? const Color(0xFF004C94)
-                      : Colors.grey.shade200,
+                      : Colors.grey.shade400,
                   width: 1.5,
                 ),
                 boxShadow: isSelected

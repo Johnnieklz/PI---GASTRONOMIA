@@ -6,7 +6,7 @@ class CustomBottomNavBar extends StatelessWidget {
   final ValueChanged<int> onTap;
 
   /// Altura total da navbar — usada pelas páginas no padding inferior das listas.
-  static const double navBarHeight = 75.0; // PASSIVEL DE MUDANÇA!!
+  static const double navBarHeight = 70.0; // PASSIVEL DE MUDANÇA!!
 
   const CustomBottomNavBar({
     super.key,
@@ -96,7 +96,7 @@ class CustomBottomNavBar extends StatelessWidget {
 
   Widget _buildCenterButton() {
     return Positioned(
-      top: -20,
+      top: 6,
       left: 0,
       right: 0,
       child: Center(

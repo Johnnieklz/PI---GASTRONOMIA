@@ -15,14 +15,24 @@ class EmAltaRow extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 6, 16, 8),
-          child: Text(
-            '📈 Em alta',
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w700,
-              color: Colors.grey[600],
-            ),
-          ),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.trending_up_rounded,
+                size: 20,
+                color: Color(0xFFCC7A12),
+              ),
+              const SizedBox(width: 6),
+              Text(
+                'Em Alta',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xFF6B6B6B).withOpacity(0.9),
+                ),
+              ),
+            ],
+          )
         ),
         SizedBox(
           height: 36,
@@ -36,10 +46,10 @@ class EmAltaRow extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF004C94),
+                  color: const Color.fromARGB(255, 255, 255, 255),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: const Color(0xFF004C94),
+                    color: const Color(0xFF1A7FCC),
                     width: 1.5,
                   ),
                 ),
@@ -48,8 +58,8 @@ class EmAltaRow extends StatelessWidget {
                   children: [
                     const Icon(
                       Icons.trending_up_rounded,
-                      size: 15,
-                      color: Color.fromARGB(255, 255, 255, 255),
+                      size: 17,
+                      color: Color(0xFF004C94),
                     ),
                     const SizedBox(width: 5),
                     Text(
@@ -57,7 +67,7 @@ class EmAltaRow extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
-                        color: Color.fromARGB(255, 255, 255, 255),
+                        color: Color(0xFF004C94),
                       ),
                     ),
                   ],
