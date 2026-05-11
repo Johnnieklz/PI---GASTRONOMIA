@@ -44,8 +44,6 @@ class ReceitaCard extends StatelessWidget {
   }
 }
 
-// BADGE COM FUNDO BRANCO + COR
-
 class _CategoryBadge extends StatelessWidget {
   final String categoria;
 
@@ -110,7 +108,7 @@ class _CategoryBadge extends StatelessWidget {
   }
 }
 
-// GRID CARD (FINAL PERFEITO)
+// GRID CARD
 class _GridCard extends StatelessWidget {
   final ReceitaCard card;
   const _GridCard({required this.card});
@@ -151,7 +149,7 @@ class _GridCard extends StatelessWidget {
                         ),
                       ),
 
-                      // 🔥 CONTEÚDO
+                      // CONTEÚDO
                       Padding(
                         padding:
                             const EdgeInsets.fromLTRB(12, 26, 12, 12),
@@ -197,7 +195,7 @@ class _GridCard extends StatelessWidget {
                     ],
                   ),
 
-                  // ❤️ FAVORITO
+                  // FAVORITO
                   Positioned(
                     top: 12,
                     right: 12,
@@ -213,7 +211,7 @@ class _GridCard extends StatelessWidget {
                     ),
                   ),
 
-                  // 🔥 BADGE AJUSTADA
+                  // BADGE AJUSTADA
                   Positioned(
                     left: 15,
                     top: 167, // AJUSTADO PRA NOVA ALTURA

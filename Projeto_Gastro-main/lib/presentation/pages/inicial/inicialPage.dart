@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../../services/favoritos_service.dart';
 import '../../../data/receitas_data.dart';
 import '../widgets/receita_card.dart';

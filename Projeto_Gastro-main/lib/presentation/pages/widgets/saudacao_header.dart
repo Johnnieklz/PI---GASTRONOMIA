@@ -84,11 +84,9 @@ class SaudacaoHeader extends StatelessWidget {
                           color: Colors.grey[600],
                         ),
                       ),
-                      prefixIconConstraints:
-                          const BoxConstraints(minWidth: 54),
+                      prefixIconConstraints: const BoxConstraints(minWidth: 54),
                       border: InputBorder.none,
-                      contentPadding:
-                          const EdgeInsets.symmetric(vertical: 17),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 17),
                     ),
                   ),
                 ),
@@ -112,7 +110,7 @@ class SaudacaoHeader extends StatelessWidget {
                   onPressed: onFilterTap,
                   icon: const Icon(
                     Icons.tune_rounded,
-                    color: Color(0xFF8B5CF6),
+                    color: Color(0xFF004C94),
                     size: 26,
                   ),
                 ),
