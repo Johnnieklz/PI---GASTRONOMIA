@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/custom_nav_bar.dart';
 
 class CriarFichaTecnica extends StatefulWidget {
   const CriarFichaTecnica({super.key});
