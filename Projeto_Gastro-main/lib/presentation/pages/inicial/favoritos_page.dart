@@ -8,12 +8,19 @@ import '../widgets/custom_nav_bar.dart';
 import 'detalheFicha.dart';
 
 class FavoritosPage extends StatelessWidget {
-  const FavoritosPage({super.key});
+  final VoidCallback onBack;
+
+  const FavoritosPage({super.key, required this.onBack});
 
   @override
   Widget build(BuildContext context) {
     // ✅ FIX "No Material widget found" — mesmo motivo da InicialPage
-    return Material(
+    return WillPopScope(
+      onWillPop: () async {
+        onBack();
+        return false;
+      },
+      child: Material(
       type: MaterialType.transparency,
       child: SafeArea(
         bottom: false,
@@ -72,6 +79,7 @@ class FavoritosPage extends StatelessWidget {
             );
           },
         ),
+      ),
       ),
     );
   }

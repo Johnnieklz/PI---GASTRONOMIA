@@ -24,13 +24,14 @@ class _MainNavigationState extends State<MainNavigation> {
 
   // IndexedStack mantém o estado das páginas já visitadas (scroll, dados, etc.)
   // sem rebuildar o widget ao trocar de aba.
-  static const _pages = <Widget>[
-    InicialPage(),       // index 0 — Home
-    FavoritosPage(),     // index 1 — Favoritos
-    CriarFichaTecnica(), // index 2 — Adicionar (botão central)
-    PerfilPage(),        // index 3 — Perfil
-    ConfiguracoesPage(), // index 4 — Configurações
-  ];
+  List<Widget> get _pages => [
+        const InicialPage(), // index 0 — Home
+        FavoritosPage(onBack: () => _onTabTap(0)), // index 1 — Favoritos
+        CriarFichaTecnica(
+            onBack: () => _onTabTap(0)), // index 2 — Adicionar (botão central)
+        PerfilPage(onBack: () => _onTabTap(0)), // index 3 — Perfil
+        const ConfiguracoesPage(), // index 4 — Configurações
+      ];
 
   void _onTabTap(int index) {
     setState(() => _currentIndex = index);

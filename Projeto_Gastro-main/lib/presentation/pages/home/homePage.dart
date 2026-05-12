@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../../config/routes/app_routes.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
@@ -39,7 +40,7 @@ class Homepage extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       // Ação ao clicar em "Começar"
-                      Navigator.pushNamed(context, '/login');
+                      Navigator.pushReplacementNamed(context, AppRoutes.login);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF6C2998),

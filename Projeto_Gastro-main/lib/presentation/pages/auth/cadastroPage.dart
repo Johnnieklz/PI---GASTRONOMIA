@@ -45,7 +45,11 @@ class _CadastroPageState extends State<CadastroPage> {
     );
 
     if (success && mounted) {
-      Navigator.pushReplacementNamed(context, AppRoutes.inicial);
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        AppRoutes.main,
+        (route) => false,
+      );
     }
   }
 
@@ -123,7 +127,7 @@ class _CadastroPageState extends State<CadastroPage> {
           key: _formKey,
           child: Column(
             children: [
-               // BOTÃO VOLTAR
+              // BOTÃO VOLTAR
               Align(
                 alignment: Alignment.topLeft,
                 child: IconButton(
@@ -218,23 +222,26 @@ class _CadastroPageState extends State<CadastroPage> {
 
               const SizedBox(height: 16),
 
-
-             Padding(
-            padding: const EdgeInsets.symmetric(vertical: 24),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text("Já tem conta? ", style: TextStyle(color: Color(0xFF6B6B6B))),
-                GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, AppRoutes.login),
-                  child: const Text(
-                    "Entrar",
-                    style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold),
-                  ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 24),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Já tem conta? ",
+                        style: TextStyle(color: Color(0xFF6B6B6B))),
+                    GestureDetector(
+                      onTap: () =>
+                          Navigator.pushNamed(context, AppRoutes.login),
+                      child: const Text(
+                        "Entrar",
+                        style: TextStyle(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
             ],
           ),
         ),
@@ -262,42 +269,34 @@ class _CadastroPageState extends State<CadastroPage> {
           ),
         ),
         const SizedBox(height: 8),
-
         TextFormField(
           controller: controller,
           obscureText: isPassword
               ? (isConfirm ? _obscureConfirmPassword : _obscurePassword)
               : false,
-
           decoration: InputDecoration(
             hintText: hint,
             hintStyle: const TextStyle(
               color: Color(0xFF9CA3AF),
               fontSize: 14,
             ),
-
             prefixIcon: Icon(
               icon,
               color: const Color(0xFF004C94),
               size: 18,
             ),
-
             filled: true,
             fillColor: const Color(0xFFF9FAFB),
-
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
-
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
               borderSide: BorderSide.none,
             ),
-
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
               borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
             ),
-
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
               borderSide: const BorderSide(
@@ -305,13 +304,10 @@ class _CadastroPageState extends State<CadastroPage> {
                 width: 1.5,
               ),
             ),
-
             suffixIcon: isPassword
                 ? IconButton(
                     icon: Icon(
-                      (isConfirm
-                              ? _obscureConfirmPassword
-                              : _obscurePassword)
+                      (isConfirm ? _obscureConfirmPassword : _obscurePassword)
                           ? Icons.visibility_off_outlined
                           : Icons.visibility_outlined,
                       color: const Color(0xFF9CA3AF),
@@ -320,11 +316,9 @@ class _CadastroPageState extends State<CadastroPage> {
                     onPressed: () {
                       setState(() {
                         if (isConfirm) {
-                          _obscureConfirmPassword =
-                              !_obscureConfirmPassword;
+                          _obscureConfirmPassword = !_obscureConfirmPassword;
                         } else {
-                          _obscurePassword =
-                              !_obscurePassword;
+                          _obscurePassword = !_obscurePassword;
                         }
                       });
                     },
@@ -332,10 +326,8 @@ class _CadastroPageState extends State<CadastroPage> {
                 : null,
           ),
         ),
-
         const SizedBox(height: 20),
       ],
     );
   }
 }
-

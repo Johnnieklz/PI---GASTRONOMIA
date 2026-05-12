@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import '../widgets/custom_nav_bar.dart';
 
 class CriarFichaTecnica extends StatefulWidget {
-  const CriarFichaTecnica({super.key});
+  final VoidCallback onBack;
+
+  const CriarFichaTecnica({super.key, required this.onBack});
 
   @override
   State<CriarFichaTecnica> createState() => _CriarFichaTecnicaState();
@@ -19,7 +21,12 @@ class _CriarFichaTecnicaState extends State<CriarFichaTecnica> {
   final _apresentacao = TextEditingController();
 
   String nivelDificuldade = 'Fácil';
-  final List<String> niveisDisponiveis = ['Fácil', 'Médio', 'Avançado', 'Expert'];
+  final List<String> niveisDisponiveis = [
+    'Fácil',
+    'Médio',
+    'Avançado',
+    'Expert'
+  ];
 
   List<Map<String, dynamic>> ingredientes = [];
   List<String> tecnicasAplicadas = [];
@@ -74,8 +81,8 @@ class _CriarFichaTecnicaState extends State<CriarFichaTecnica> {
                 backgroundColor: const Color(0xFF6C2998),
               ),
               onPressed: () {
-                if (nomeCtrl.text.isNotEmpty && 
-                    qtdCtrl.text.isNotEmpty && 
+                if (nomeCtrl.text.isNotEmpty &&
+                    qtdCtrl.text.isNotEmpty &&
                     precoCtrl.text.isNotEmpty) {
                   setState(() {
                     ingredientes.add({
@@ -87,7 +94,8 @@ class _CriarFichaTecnicaState extends State<CriarFichaTecnica> {
                   Navigator.pop(context);
                 }
               },
-              child: const Text('Adicionar', style: TextStyle(color: Colors.white)),
+              child: const Text('Adicionar',
+                  style: TextStyle(color: Colors.white)),
             ),
           ],
         );
@@ -126,7 +134,8 @@ class _CriarFichaTecnicaState extends State<CriarFichaTecnica> {
                   Navigator.pop(context);
                 }
               },
-              child: const Text('Adicionar', style: TextStyle(color: Colors.white)),
+              child: const Text('Adicionar',
+                  style: TextStyle(color: Colors.white)),
             ),
           ],
         );
@@ -135,7 +144,8 @@ class _CriarFichaTecnicaState extends State<CriarFichaTecnica> {
   }
 
   double get custoTotal {
-    return ingredientes.fold(0.0, (sum, item) => sum + (item['preco'] as double));
+    return ingredientes.fold(
+        0.0, (sum, item) => sum + (item['preco'] as double));
   }
 
   double get custoPorPorcao {
@@ -145,10 +155,15 @@ class _CriarFichaTecnicaState extends State<CriarFichaTecnica> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
+    return WillPopScope(
+      onWillPop: () async {
+        widget.onBack();
+        return false;
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: SafeArea(
+          child: Column(
           children: [
             // Header
             Container(
@@ -157,8 +172,9 @@ class _CriarFichaTecnicaState extends State<CriarFichaTecnica> {
               child: Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.arrow_back, color: Colors.white, size: 28),
-                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.arrow_back,
+                        color: Colors.white, size: 28),
+                    onPressed: widget.onBack,
                   ),
                   const Text(
                     'Criar Ficha Técnica',
@@ -192,14 +208,17 @@ class _CriarFichaTecnicaState extends State<CriarFichaTecnica> {
                             decoration: BoxDecoration(
                               color: Colors.grey[200],
                               borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: const Color(0xFFB47AFF), width: 2),
+                              border: Border.all(
+                                  color: const Color(0xFFB47AFF), width: 2),
                             ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.add_photo_alternate, size: 48, color: Colors.grey[400]),
+                                Icon(Icons.add_photo_alternate,
+                                    size: 48, color: Colors.grey[400]),
                                 const SizedBox(height: 8),
-                                Text('Adicionar foto', style: TextStyle(color: Colors.grey[600])),
+                                Text('Adicionar foto',
+                                    style: TextStyle(color: Colors.grey[600])),
                               ],
                             ),
                           ),
@@ -217,10 +236,12 @@ class _CriarFichaTecnicaState extends State<CriarFichaTecnica> {
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Color(0xFF6C2998), width: 2),
+                            borderSide: const BorderSide(
+                                color: Color(0xFF6C2998), width: 2),
                           ),
                         ),
-                        validator: (value) => value?.isEmpty ?? true ? 'Campo obrigatório' : null,
+                        validator: (value) =>
+                            value?.isEmpty ?? true ? 'Campo obrigatório' : null,
                       ),
                       const SizedBox(height: 16),
 
@@ -234,14 +255,16 @@ class _CriarFichaTecnicaState extends State<CriarFichaTecnica> {
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Color(0xFF6C2998), width: 2),
+                            borderSide: const BorderSide(
+                                color: Color(0xFF6C2998), width: 2),
                           ),
                         ),
                       ),
                       const SizedBox(height: 16),
 
                       // Nível de Dificuldade
-                      const Text('Nível de Dificuldade', style: TextStyle(fontWeight: FontWeight.w600)),
+                      const Text('Nível de Dificuldade',
+                          style: TextStyle(fontWeight: FontWeight.w600)),
                       const SizedBox(height: 8),
                       Wrap(
                         spacing: 8,
@@ -256,7 +279,9 @@ class _CriarFichaTecnicaState extends State<CriarFichaTecnica> {
                             },
                             selectedColor: const Color(0xFFB47AFF),
                             labelStyle: TextStyle(
-                              color: nivelDificuldade == nivel ? Colors.white : Colors.black,
+                              color: nivelDificuldade == nivel
+                                  ? Colors.white
+                                  : Colors.black,
                             ),
                           );
                         }).toList(),
@@ -272,13 +297,15 @@ class _CriarFichaTecnicaState extends State<CriarFichaTecnica> {
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 labelText: 'Tempo (min)',
-                                prefixIcon: const Icon(Icons.access_time, color: Color(0xFFB47AFF)),
+                                prefixIcon: const Icon(Icons.access_time,
+                                    color: Color(0xFFB47AFF)),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(color: Color(0xFF6C2998), width: 2),
+                                  borderSide: const BorderSide(
+                                      color: Color(0xFF6C2998), width: 2),
                                 ),
                               ),
                             ),
@@ -290,13 +317,15 @@ class _CriarFichaTecnicaState extends State<CriarFichaTecnica> {
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 labelText: 'Porções',
-                                prefixIcon: const Icon(Icons.people, color: Color(0xFFB47AFF)),
+                                prefixIcon: const Icon(Icons.people,
+                                    color: Color(0xFFB47AFF)),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(color: Color(0xFF6C2998), width: 2),
+                                  borderSide: const BorderSide(
+                                      color: Color(0xFF6C2998), width: 2),
                                 ),
                               ),
                             ),
@@ -309,16 +338,20 @@ class _CriarFichaTecnicaState extends State<CriarFichaTecnica> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('Técnicas Aplicadas', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
+                          const Text('Técnicas Aplicadas',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 16)),
                           IconButton(
                             onPressed: _adicionarTecnica,
-                            icon: const Icon(Icons.add_circle, color: Color(0xFF6C2998)),
+                            icon: const Icon(Icons.add_circle,
+                                color: Color(0xFF6C2998)),
                           ),
                         ],
                       ),
                       const SizedBox(height: 8),
                       if (tecnicasAplicadas.isEmpty)
-                        const Text('Nenhuma técnica adicionada', style: TextStyle(color: Colors.grey))
+                        const Text('Nenhuma técnica adicionada',
+                            style: TextStyle(color: Colors.grey))
                       else
                         Wrap(
                           spacing: 8,
@@ -343,10 +376,13 @@ class _CriarFichaTecnicaState extends State<CriarFichaTecnica> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('Ingredientes', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
+                          const Text('Ingredientes',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 16)),
                           IconButton(
                             onPressed: _adicionarIngrediente,
-                            icon: const Icon(Icons.add_circle, color: Color(0xFF6C2998)),
+                            icon: const Icon(Icons.add_circle,
+                                color: Color(0xFF6C2998)),
                           ),
                         ],
                       ),
@@ -377,7 +413,8 @@ class _CriarFichaTecnicaState extends State<CriarFichaTecnica> {
                                 final index = entry.key;
                                 final ingrediente = entry.value;
                                 return ListTile(
-                                  title: Text('${index + 1}. ${ingrediente['nome']}'),
+                                  title: Text(
+                                      '${index + 1}. ${ingrediente['nome']}'),
                                   subtitle: Text(ingrediente['quantidade']),
                                   trailing: Row(
                                     mainAxisSize: MainAxisSize.min,
@@ -390,7 +427,8 @@ class _CriarFichaTecnicaState extends State<CriarFichaTecnica> {
                                         ),
                                       ),
                                       IconButton(
-                                        icon: const Icon(Icons.delete, color: Colors.red),
+                                        icon: const Icon(Icons.delete,
+                                            color: Colors.red),
                                         onPressed: () {
                                           setState(() {
                                             ingredientes.removeAt(index);
@@ -409,20 +447,26 @@ class _CriarFichaTecnicaState extends State<CriarFichaTecnica> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text('Custo Total:', style: TextStyle(fontWeight: FontWeight.w600)),
+                            const Text('Custo Total:',
+                                style: TextStyle(fontWeight: FontWeight.w600)),
                             Text(
                               'R\$ ${custoTotal.toStringAsFixed(2)}',
-                              style: const TextStyle(color: Color(0xFFB47AFF), fontWeight: FontWeight.w600),
+                              style: const TextStyle(
+                                  color: Color(0xFFB47AFF),
+                                  fontWeight: FontWeight.w600),
                             ),
                           ],
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text('Custo por Porção:', style: TextStyle(fontWeight: FontWeight.w600)),
+                            const Text('Custo por Porção:',
+                                style: TextStyle(fontWeight: FontWeight.w600)),
                             Text(
                               'R\$ ${custoPorPorcao.toStringAsFixed(2)}',
-                              style: const TextStyle(color: Color(0xFFB47AFF), fontWeight: FontWeight.w600),
+                              style: const TextStyle(
+                                  color: Color(0xFFB47AFF),
+                                  fontWeight: FontWeight.w600),
                             ),
                           ],
                         ),
@@ -430,7 +474,9 @@ class _CriarFichaTecnicaState extends State<CriarFichaTecnica> {
                       const SizedBox(height: 20),
 
                       // Modo de Preparo
-                      const Text('Modo de Preparo', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
+                      const Text('Modo de Preparo',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 16)),
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: _modoPreparo,
@@ -439,18 +485,22 @@ class _CriarFichaTecnicaState extends State<CriarFichaTecnica> {
                           hintText: 'Descreva o modo de preparo...',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Color(0xFFB47AFF)),
+                            borderSide:
+                                const BorderSide(color: Color(0xFFB47AFF)),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Color(0xFF6C2998), width: 2),
+                            borderSide: const BorderSide(
+                                color: Color(0xFF6C2998), width: 2),
                           ),
                         ),
                       ),
                       const SizedBox(height: 16),
 
                       // Armazenamento
-                      const Text('Armazenamento e Validade', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
+                      const Text('Armazenamento e Validade',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 16)),
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: _armazenamento,
@@ -459,31 +509,38 @@ class _CriarFichaTecnicaState extends State<CriarFichaTecnica> {
                           hintText: 'Ex: 3 dias refrigerado, 60 dias congelado',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Color(0xFFB47AFF)),
+                            borderSide:
+                                const BorderSide(color: Color(0xFFB47AFF)),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Color(0xFF6C2998), width: 2),
+                            borderSide: const BorderSide(
+                                color: Color(0xFF6C2998), width: 2),
                           ),
                         ),
                       ),
                       const SizedBox(height: 16),
 
                       // Apresentação
-                      const Text('Sugestões de Apresentação', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
+                      const Text('Sugestões de Apresentação',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 16)),
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: _apresentacao,
                         maxLines: 2,
                         decoration: InputDecoration(
-                          hintText: 'Ex: Finalizar com pó de ouro e flores comestíveis',
+                          hintText:
+                              'Ex: Finalizar com pó de ouro e flores comestíveis',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Color(0xFFB47AFF)),
+                            borderSide:
+                                const BorderSide(color: Color(0xFFB47AFF)),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(color: Color(0xFF6C2998), width: 2),
+                            borderSide: const BorderSide(
+                                color: Color(0xFF6C2998), width: 2),
                           ),
                         ),
                       ),
@@ -505,16 +562,20 @@ class _CriarFichaTecnicaState extends State<CriarFichaTecnica> {
                               // TODO: Salvar ficha técnica
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text('Ficha técnica salva com sucesso!'),
+                                  content:
+                                      Text('Ficha técnica salva com sucesso!'),
                                   backgroundColor: Color(0xFF6C2998),
                                 ),
                               );
-                              Navigator.pop(context);
+                              widget.onBack();
                             }
                           },
                           child: const Text(
                             'Salvar Ficha Técnica',
-                            style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
@@ -527,6 +588,7 @@ class _CriarFichaTecnicaState extends State<CriarFichaTecnica> {
           ],
         ),
       ),
+    ),
     );
   }
 
