@@ -1,6 +1,5 @@
-from typing import List, Optional
+from typing import List
 from pydantic_settings import BaseSettings
-from pydantic import field_validator
 import os
 
 
@@ -18,32 +17,27 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 
     # CORS - Permitir origens do Flutter Web e desenvolvimento
-    BACKEND_CORS_ORIGINS: List[str] = [
-        "http://localhost:3000",
-        "http://localhost:5173",
-        "http://localhost:8080",
-        "http://127.0.0.1:8080",
-        "http://frontend",
-        "http://frontend:80",
-        "http://localhost:80",
-        "http://localhost",
-        "*"  # Permissão para desenvolvimento - remover em produção
-    ]
+    BACKEND_CORS_ORIGINS: str = (
+        "http://localhost:3000,http://localhost:5173,http://localhost:8080,"
+        "http://127.0.0.1:8080,http://frontend,http://frontend:80,"
+        "http://localhost:80,http://localhost,*"
+    )
 
-    @field_validator("BACKEND_CORS_ORIGINS", mode="before")
-    @classmethod
-    def assemble_cors_origins(cls, v):
+    @property
+    def cors_origins(self) -> List[str]:
         import json
-        if isinstance(v, str):
+
+        if isinstance(self.BACKEND_CORS_ORIGINS, str):
+            value = self.BACKEND_CORS_ORIGINS.strip()
+            if not value:
+                return []
+
             try:
-                # Tenta fazer parse como JSON primeiro
-                return json.loads(v)
+                return json.loads(value)
             except json.JSONDecodeError:
-                # Se falhar, assume que é lista separada por vírgula
-                return [i.strip() for i in v.split(",")]
-        elif isinstance(v, (list, str)):
-            return v
-        raise ValueError(v)
+                return [i.strip() for i in value.split(",") if i.strip()]
+
+        return self.BACKEND_CORS_ORIGINS
 
     class Config:
         env_file = ".env"

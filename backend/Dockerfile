@@ -21,13 +21,8 @@ ENV PYTHONPATH=/app
 ENV DATABASE_URL=sqlite:///./data/app.db
 ENV DEBUG=True
 
-# Copiar entrypoint
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
 # Expor porta
 EXPOSE 8000
 
-# Entrypoint e comando para iniciar o servidor
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+# Comando para iniciar o servidor
+CMD ["sh", "-c", "python -c 'from app.db.init_db import init_db; init_db()' && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"]

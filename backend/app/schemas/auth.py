@@ -34,10 +34,8 @@ class LoginResponse(BaseModel):
     expires_in: int
     user: User
 
-
 class PasswordResetRequest(BaseModel):
     email: EmailStr
-
 
 class PasswordResetConfirm(BaseModel):
     token: str
