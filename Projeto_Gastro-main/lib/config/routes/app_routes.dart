@@ -8,7 +8,7 @@ import '../../presentation/pages/perfil/perfilPage.dart';
 import '../../presentation/pages/configuracoes/configuracoesPage.dart';
 import '../../presentation/pages/auth/forgotPasswordPage.dart';
 import '../../presentation/pages/auth/forgotPasswordSucess.dart';
-import '../../presentation/pages/inicial/criar_ficha_tecnica_page.dart';
+import '../../features/ficha_tecnica/presentation/pages/criar_ficha_tecnica_page.dart';
 
 class AppRoutes {
   static const String home = '/';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../../config/theme/app_colors.dart';
+import '../../../../config/theme/app_colors.dart';
 
 class CriarFichaLayout extends StatelessWidget {
   final Widget child;
@@ -15,44 +14,43 @@ class CriarFichaLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-
-    final isTablet = width >= 600 && width < 1024;
     final isDesktop = width >= 1024;
 
     return Scaffold(
       backgroundColor: AppColors.background,
-
       appBar: appBar,
-
       body: Stack(
         children: [
           Positioned(
-            bottom: 20,
-            left: 0,
-            right: 0,
+            bottom: -50,
+            right: -50,
             child: Opacity(
-              opacity: 0.65,
+              opacity: 0.1, 
               child: Image.asset(
                 'assets/imagens/senac_fundo.png',
-                fit: BoxFit.fitWidth,
+                width: 400,
               ),
             ),
           ),
-
-          SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 140),
-
-            child: Center(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: isDesktop
-                      ? 1000
-                      : isTablet
-                          ? 800
-                          : double.infinity,
+          
+          SafeArea(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(
+                horizontal: isDesktop ? width * 0.1 : 20,
+                vertical: 30,
+              ),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: isDesktop ? 1200 : 800,
+                  ),
+                  child: Column(
+                    children: [
+                      // Breadcrumbs or Title could go here if needed
+                      child,
+                    ],
+                  ),
                 ),
-
-                child: child,
               ),
             ),
           ),

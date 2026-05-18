@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import '../../../config/theme/app_colors.dart';
+import '../../../../config/theme/app_colors.dart';
 
 class ReceitaFotoPicker extends StatelessWidget {
   final File? imagemReceita;

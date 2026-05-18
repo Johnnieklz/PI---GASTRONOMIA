@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../config/theme/app_colors.dart';
+import '../../../../../config/theme/app_colors.dart';
 
 class FinanceCard extends StatelessWidget {
   final String title;
@@ -16,7 +16,10 @@ class FinanceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 14,
+        vertical: 12,
+      ),
 
       decoration: BoxDecoration(
         color: Colors.white,
@@ -33,10 +36,10 @@ class FinanceCard extends StatelessWidget {
           Icon(
             icon,
             color: AppColors.primary,
-            size: 20,
+            size: 18,
           ),
 
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
 
           Text(
             title,
@@ -52,7 +55,7 @@ class FinanceCard extends StatelessWidget {
           Text(
             value,
             style: const TextStyle(
-              fontSize: 18,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               color: AppColors.textPrimary,
             ),

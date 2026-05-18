@@ -10,7 +10,7 @@ class Homepage extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           Image.asset(
-            'assets/imagens/imagem_de_fundo.png',
+            'assets/imagens/senac_fundo.png',
             fit: BoxFit.cover,
           ),
           Center(
